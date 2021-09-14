@@ -5,14 +5,9 @@ A logger that logs training activity to Weights and Biases.
 from typing import Dict, Any, Tuple, Callable, List, Optional, IO
 import sys
 
-from . import util
-from .console import console_logger
-
-
-# error copied from spacy.errors
-E880 = ("[E880] The 'wandb' library could not be found - did you install it? "
-        "Alternatively, specify the 'ConsoleLogger' in the 'training.logger' "
-        "config section, instead of the 'WandbLogger'.")
+from spacy import util, errors
+from spacy import Language
+from spacy.training.loggers import console_logger
 
 
 # entry point: spacy.WandbLogger.v2
@@ -28,7 +23,7 @@ def wandb_logger_v2(
         # test that these are available
         from wandb import init, log, join  # noqa: F401
     except ImportError:
-        raise ImportError(E880)
+        raise ImportError(errors.E880)
 
     console = console_logger(progress_bar=False)
 
@@ -99,7 +94,7 @@ def wandb_logger_v1(project_name: str, remove_config_values: List[str] = []):
         import wandb
         from wandb import init, log, join  # test that these are available
     except ImportError:
-        raise ImportError(E880)
+        raise ImportError(errors.E880)
 
     console = console_logger(progress_bar=False)
 
