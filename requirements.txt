@@ -1,6 +1,9 @@
 # Install requirements (also in setup.cfg)
 wasabi>=0.8.1,<1.1.0
-spacy>=3.1,<4.0
 
 # Testing/development requirements
 pytest
+
+# spacy-loggers also implicitly depends on spacy, but we won't say so because
+# we need spacy to depend on spacy-loggers, to make sure it's installed for
+# backwards compatibility.
