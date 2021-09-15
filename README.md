@@ -10,9 +10,8 @@ loggers, so that minor changes to logging don't require a new version of spaCy.
 Loggers should now be provided by this package.
 
 Currently, this package provides loggers for logging to Weights and Biases. The
-current logger is `spacy.WandbLogger.v2`. This package also provides
-`spacy.WandbLogger.v1` for backward compatibility. These loggers require
-installing and setting up the `wandb` package.
+current logger is `spacy.WandbLogger.v3`. This package also provides
+`spacy.WandbLogger.v1` and `spacy.WandbLogger.v2` for backward compatibility.
 
 
 ## Setup and installation
@@ -29,7 +28,7 @@ spacy-loggers. This makes sure that spacy-loggers is installed for those who
 were already relying on its functionality.
 
 
-# spacy.WandbLogger.v2
+# spacy.WandbLogger.v3
 
 ## Installation
 
@@ -62,16 +61,18 @@ on your local system.
 
 ```ini
 [training.logger]
-@loggers = "spacy.WandbLogger.v2"
+@loggers = "spacy.WandbLogger.v3"
 project_name = "monitor_spacy_training"
 remove_config_values = ["paths.train", "paths.dev", "corpora.train.path", "corpora.dev.path"]
 log_dataset_dir = "corpus"
 model_log_interval = 1000
 ```
 
-| Name                   | Type            | Description                                                                                                                   |
-| ---------------------- | --------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| `project_name`         | `str`           | The name of the project in the Weights & Biases interface. The project will be created automatically if it doesn't exist yet. |
-| `remove_config_values` | `List[str]`     | A list of values to include from the config before it is uploaded to W&B (default: empty).                                    |
-| `model_log_interval`   | `Optional[int]` | Steps to wait between logging model checkpoints to W&B dasboard (default: None).                                              |
-| `log_dataset_dir`      | `Optional[str]` | Directory containing dataset to be logged and versioned as W&B artifact (default: None).                                      |
+| Name                   | Type            | Description                                                                                                                                                                                  |
+| ---------------------- | --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `project_name`         | `str`           | The name of the project in the Weights & Biases interface. The project will be created automatically if it doesn't exist yet.                                                                |
+| `remove_config_values` | `List[str]`     | A list of values to include from the config before it is uploaded to W&B (default: empty).                                                                                                   |
+| `model_log_interval`   | `Optional[int]` | Steps to wait between logging model checkpoints to W&B dasboard (default: None).                                                                                                             |
+| `log_dataset_dir`      | `Optional[str]` | Directory containing dataset to be logged and versioned as W&B artifact (default: None).                                                                                                     |
+| `run_name`             | `Optional[str]` | The name of the run. If you don't specify a run_name, the name will be created by wandb library. (default: None)                                                                             |
+| `entity`               | `Optional[str]` | An entity is a username or team name where you're sending runs. If you don't specify an entity, the run will be sent to your default entity, which is usually your username. (default: None) |
