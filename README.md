@@ -31,7 +31,7 @@ conda install -c conda-forge spacy-loggers
 
 # Loggers
 
-## spacy.WandbLogger.v3
+## WandbLogger
 
 ### Installation
 
@@ -44,10 +44,10 @@ $ wandb login
 
 ### Usage
 
-`WandbLogger` is a logger that sends the results of each training step to the
-dashboard of the [Weights & Biases](https://www.wandb.com/) tool. To use this
-logger, Weights & Biases should be installed, and you should be logged in. The
-logger will send the full config file to W&B, as well as various system
+`spacy.WandbLogger.v3` is a logger that sends the results of each training step
+to the dashboard of the [Weights & Biases](https://www.wandb.com/) tool. To use
+this logger, Weights & Biases should be installed, and you should be logged in.
+The logger will send the full config file to W&B, as well as various system
 information such as memory utilization, network traffic, disk IO, GPU
 statistics, etc. This will also include information such as your hostname and
 operating system, as well as the location of your Python executable.
