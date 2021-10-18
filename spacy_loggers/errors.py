@@ -5,6 +5,6 @@ from spacy.errors import add_codes
 
 @add_codes
 class Errors:
-    E880 = ("The 'wandb' library could not be found - did you install it? "
-            "Alternatively, specify the 'ConsoleLogger' in the 'training.logger' "
-            "config section, instead of the 'WandbLogger'.")
+    SPACY_LOGGERS_E880 = ("The 'wandb' library could not be found - did you "
+            "install it? Alternatively, specify the 'ConsoleLogger' in the "
+            "'training.logger' config section, instead of the 'WandbLogger'.")

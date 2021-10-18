@@ -26,7 +26,7 @@ def wandb_logger_v3(
         # test that these are available
         from wandb import init, log, join  # noqa: F401
     except ImportError:
-        raise ImportError(Errors.E880)
+        raise ImportError(Errors.SPACY_LOGGERS_E880)
 
     console = console_logger(progress_bar=False)
 
@@ -108,7 +108,7 @@ def wandb_logger_v2(
         # test that these are available
         from wandb import init, log, join  # noqa: F401
     except ImportError:
-        raise ImportError(Errors.E880)
+        raise ImportError(Errors.SPACY_LOGGERS_E880)
 
     console = console_logger(progress_bar=False)
 
@@ -181,7 +181,7 @@ def wandb_logger_v1(project_name: str, remove_config_values: List[str] = []):
         # test that these are available
         from wandb import init, log, join  # noqa: F401
     except ImportError:
-        raise ImportError(Errors.E880)
+        raise ImportError(Errors.SPACY_LOGGERS_E880)
 
     console = console_logger(progress_bar=False)
 
