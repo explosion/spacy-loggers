@@ -5,10 +5,9 @@ A logger that logs training activity to Weights and Biases.
 from typing import Dict, Any, Tuple, Callable, List, Optional, IO
 import sys
 
-from spacy import util, errors
+from spacy import util
 from spacy import Language
 from spacy.training.loggers import console_logger
-from spacy.errors import Errors
 
 
 # entry point: spacy.WandbLogger.v3
@@ -26,7 +25,11 @@ def wandb_logger_v3(
         # test that these are available
         from wandb import init, log, join  # noqa: F401
     except ImportError:
-        raise ImportError(Errors.E880)
+        raise ImportError(
+            "The 'wandb' library could not be found - did you install it? "
+            "Alternatively, specify the 'ConsoleLogger' in the "
+            "'training.logger' config section, instead of the 'WandbLogger'."
+        )
 
     console = console_logger(progress_bar=False)
 
@@ -38,7 +41,9 @@ def wandb_logger_v3(
         for field in remove_config_values:
             del config_dot[field]
         config = util.dot_to_dict(config_dot)
-        run = wandb.init(project=project_name, config=config, entity=entity, reinit=True)
+        run = wandb.init(
+            project=project_name, config=config, entity=entity, reinit=True
+        )
 
         if run_name:
             wandb.run.name = run_name
@@ -108,7 +113,11 @@ def wandb_logger_v2(
         # test that these are available
         from wandb import init, log, join  # noqa: F401
     except ImportError:
-        raise ImportError(errors.E880)
+        raise ImportError(
+            "The 'wandb' library could not be found - did you install it? "
+            "Alternatively, specify the 'ConsoleLogger' in the "
+            "'training.logger' config section, instead of the 'WandbLogger'."
+        )
 
     console = console_logger(progress_bar=False)
 
@@ -181,7 +190,11 @@ def wandb_logger_v1(project_name: str, remove_config_values: List[str] = []):
         # test that these are available
         from wandb import init, log, join  # noqa: F401
     except ImportError:
-        raise ImportError(errors.E880)
+        raise ImportError(
+            "The 'wandb' library could not be found - did you install it? "
+            "Alternatively, specify the 'ConsoleLogger' in the "
+            "'training.logger' config section, instead of the 'WandbLogger'."
+        )
 
     console = console_logger(progress_bar=False)
 
