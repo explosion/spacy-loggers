@@ -102,6 +102,7 @@ def wandb_logger_v3(
         def finalize() -> None:
 
             if log_best_dir:
+                print("-- Logging best model.")
                 log_dir_artifact(
                     path=log_best_dir,
                     name="model_best",
@@ -111,9 +112,10 @@ def wandb_logger_v3(
                 )
 
             if log_latest_dir:
+                print("-- Logging last model.")
                 log_dir_artifact(
                     path=log_latest_dir,
-                    name="model_latest",
+                    name="model_last",
                     type="model",
                     # metadata=,
                     # aliases=
