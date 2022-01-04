@@ -58,16 +58,12 @@ def wandb_logger_v3(
             metadata: Optional[Dict[str, Any]] = {},
             aliases: Optional[List[str]] = [],
         ):
-            dataset_artifact = wandb.Artifact(
-                name, type=type, metadata=metadata
-            )
+            dataset_artifact = wandb.Artifact(name, type=type, metadata=metadata)
             dataset_artifact.add_dir(path, name=name)
             wandb.log_artifact(dataset_artifact, aliases=aliases)
 
         if log_dataset_dir:
-            log_dir_artifact(
-                path=log_dataset_dir, name="dataset", type="dataset"
-            )
+            log_dir_artifact(path=log_dataset_dir, name="dataset", type="dataset")
 
         def log_step(info: Optional[Dict[str, Any]]):
             console_log_step(info)
@@ -81,10 +77,7 @@ def wandb_logger_v3(
                 if isinstance(other_scores, dict):
                     wandb.log(other_scores)
                 if model_log_interval and info.get("output_path"):
-                    if (
-                        info["step"] % model_log_interval == 0
-                        and info["step"] != 0
-                    ):
+                    if info["step"] % model_log_interval == 0 and info["step"] != 0:
                         log_dir_artifact(
                             path=info["output_path"],
                             name="pipeline_" + run.id,
@@ -162,16 +155,12 @@ def wandb_logger_v2(
             metadata: Optional[Dict[str, Any]] = {},
             aliases: Optional[List[str]] = [],
         ):
-            dataset_artifact = wandb.Artifact(
-                name, type=type, metadata=metadata
-            )
+            dataset_artifact = wandb.Artifact(name, type=type, metadata=metadata)
             dataset_artifact.add_dir(path, name=name)
             wandb.log_artifact(dataset_artifact, aliases=aliases)
 
         if log_dataset_dir:
-            log_dir_artifact(
-                path=log_dataset_dir, name="dataset", type="dataset"
-            )
+            log_dir_artifact(path=log_dataset_dir, name="dataset", type="dataset")
 
         def log_step(info: Optional[Dict[str, Any]]):
             console_log_step(info)
@@ -185,10 +174,7 @@ def wandb_logger_v2(
                 if isinstance(other_scores, dict):
                     wandb.log(other_scores)
                 if model_log_interval and info.get("output_path"):
-                    if (
-                        info["step"] % model_log_interval == 0
-                        and info["step"] != 0
-                    ):
+                    if info["step"] % model_log_interval == 0 and info["step"] != 0:
                         log_dir_artifact(
                             path=info["output_path"],
                             name="pipeline_" + run.id,
