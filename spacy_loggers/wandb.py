@@ -106,8 +106,6 @@ def wandb_logger_v3(
                     path=log_best_dir,
                     name="model_best",
                     type="model",
-                    # metadata=,
-                    # aliases=
                 )
 
             if log_latest_dir:
@@ -115,8 +113,6 @@ def wandb_logger_v3(
                     path=log_latest_dir,
                     name="model_last",
                     type="model",
-                    # metadata=,
-                    # aliases=
                 )
 
             console_finalize()
