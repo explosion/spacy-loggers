@@ -131,8 +131,6 @@ def wandb_logger_v3(
     log_dataset_dir: Optional[str] = None,
     entity: Optional[str] = None,
     run_name: Optional[str] = None,
-    log_best_dir: Optional[str] = None,
-    log_latest_dir: Optional[str] = None,
 ):
     try:
         import wandb
@@ -214,21 +212,6 @@ def wandb_logger_v3(
                         )
 
         def finalize() -> None:
-
-            if log_best_dir:
-                log_dir_artifact(
-                    path=log_best_dir,
-                    name="model_best",
-                    type="model",
-                )
-
-            if log_latest_dir:
-                log_dir_artifact(
-                    path=log_latest_dir,
-                    name="model_last",
-                    type="model",
-                )
-
             console_finalize()
             wandb.join()
 
