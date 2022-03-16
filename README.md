@@ -44,7 +44,7 @@ wandb login
 
 ### Usage
 
-`spacy.WandbLogger.v3` is a logger that sends the results of each training step
+`spacy.WandbLogger.v4` is a logger that sends the results of each training step
 to the dashboard of the [Weights & Biases](https://www.wandb.com/) tool. To use
 this logger, Weights & Biases should be installed, and you should be logged in.
 The logger will send the full config file to W&B, as well as various system
@@ -64,7 +64,7 @@ on your local system.
 
 ```ini
 [training.logger]
-@loggers = "spacy.WandbLogger.v3"
+@loggers = "spacy.WandbLogger.v4"
 project_name = "monitor_spacy_training"
 remove_config_values = ["paths.train", "paths.dev", "corpora.train.path", "corpora.dev.path"]
 log_dataset_dir = "corpus"
