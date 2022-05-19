@@ -106,7 +106,9 @@ the following actions are performed:
 - The final score is logged under the metric `score`.
 - Individual component scores are logged under their default names.
 - Loss values of different components are logged with the `loss_` prefix.
-- If the final score is higher than the previous best score (for the current run), the model artifact is additionally uploaded to MLflow.
+- If the final score is higher than the previous best score (for the current run),
+  the model artifact is additionally uploaded to MLflow. This action is only performed
+  if the `output_path` argument is provided during the training pipeline initialization phase.
 
 By default, the tracking API writes data into files into a local `./mlruns` directory.
 
