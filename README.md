@@ -95,7 +95,7 @@ pip install mlflow
 
 ### Usage
 
-`spacy.MLflowLogger.v1` is a logger that traks the results of each training step
+`spacy.MLflowLogger.v1` is a logger that tracks the results of each training step
 using the [MLflow](https://www.mlflow.org/) tool. To use
 this logger, MLflow should be installed. At the beginning of each model training
 operation, the logger will initialize a new MLflow run and set it as the active
