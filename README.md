@@ -110,7 +110,7 @@ the following actions are performed:
   the model artifact is additionally uploaded to MLflow. This action is only performed
   if the `output_path` argument is provided during the training pipeline initialization phase.
 
-By default, the tracking API writes data into files into a local `./mlruns` directory.
+By default, the tracking API writes data into files in a local `./mlruns` directory.
 
 **Note** that by default, the full (interpolated)
 [training config](https://spacy.io/usage/training#config) is sent over to the
