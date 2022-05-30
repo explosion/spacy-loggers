@@ -113,8 +113,8 @@ the following actions are performed:
 By default, the tracking API writes data into files in a local `./mlruns` directory.
 
 **Note** that by default, the full (interpolated)
-[training config](https://spacy.io/usage/training#config) is sent over to the
-W&B dashboard. If you prefer to **exclude certain information** such as path
+[training config](https://spacy.io/usage/training#config) is sent over to 
+MLflow. If you prefer to **exclude certain information** such as path
 names, you can list those fields in "dot notation" in the
 `remove_config_values` parameter. These fields will then be removed from the
 config before uploading, but will otherwise remain in the config file stored
