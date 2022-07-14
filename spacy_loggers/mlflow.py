@@ -71,7 +71,13 @@ def mlflow_logger_v1(
                 if losses:
                     mlflow.log_metrics({f"loss_{k}": v for k, v in losses.items()})
                 if isinstance(other_scores, dict):
-                    mlflow.log_metrics(util.dict_to_dot(other_scores))
+                    mlflow.log_metrics(
+                        {
+                            k: v
+                            for k, v in util.dict_to_dot(other_scores).items()
+                            if isinstance(v, float) or isinstance(v, int)
+                        }
+                    )
                 if output_path and score == max(info["checkpoints"])[0]:
                     nlp = load(output_path)
                     mlflow.spacy.log_model(nlp, "best")
