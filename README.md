@@ -155,7 +155,7 @@ clearml-init
 ### Usage
 
 `spacy.ClearMLLogger.v1` is a logger that tracks the results of each training step
-using the [ClearML](https://www.mlflow.org/) tool. To use
+using the [ClearML](https://www.clear.ml/) tool. To use
 this logger, ClearML should be installed and you should have initialized (using the command above).
 The logger will send all the gathered information to your ClearML server, either [the hosted free tier](https://app.clear.ml) 
 or the open source [self-hosted server](https://github.com/allegroai/clearml-server). This logger captures all the following information (all visible in the webUI):
