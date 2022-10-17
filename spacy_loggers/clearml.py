@@ -5,6 +5,7 @@ import sys
 from spacy import util
 from spacy.training.loggers import console_logger
 
+
 # entry point: spacy.ClearMLLogger.v1
 def clearml_logger_v1(
     project_name: str,
@@ -20,7 +21,7 @@ def clearml_logger_v1(
         from clearml import Task, Dataset, OutputModel  # noqa: F401
     except ImportError as exc:
         raise ImportError(
-            "The 'mlflow' library could not be found - did you install it? "
+            "The 'clearml' library could not be found - did you install it? "
             "Alternatively, specify the 'ConsoleLogger' in the "
             "'training.logger' config section, instead of the 'MLflowLogger'."
         ) from exc
@@ -114,7 +115,6 @@ def clearml_logger_v1(
                             )
 
         def finalize() -> None:
-
             console_finalize()
             task.flush(wait_for_uploads=True)
             task.close()

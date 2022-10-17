@@ -158,15 +158,15 @@ clearml-init
 using the [ClearML](https://www.clear.ml/) tool. To use
 this logger, ClearML should be installed and you should have initialized (using the command above).
 The logger will send all the gathered information to your ClearML server, either [the hosted free tier](https://app.clear.ml) 
-or the open source [self-hosted server](https://github.com/allegroai/clearml-server). This logger captures all the following information (all visible in the webUI):
+or the open source [self-hosted server](https://github.com/allegroai/clearml-server). This logger captures all the following information (all visible in the web UI):
 
 - The full spaCy config file contents
 - Code information such as git repository, commit ID and uncommitted changes.
 - Full console output
-- Miscellanious info such as time, python version and hardware information
+- Miscellaneous info such as time, python version and hardware information
 - Output scalars:
     - The final score is logged under the scalar `score`.
-    - Individual component scores are grouped together on 1 scalar plot, use the webUI to filter.
+    - Individual component scores are grouped together on one scalar plot, use the web UI to filter.
     - Loss values of different components are logged with the `loss_` prefix.
 
 Then optionally, depending on the setting below, the following can be captured:
