@@ -39,30 +39,32 @@ def clearml_logger_v1(
         task = Task.init(
             project_name=project_name,
             task_name=task_name if task_name else "spaCy Training",
-            output_uri=True
+            output_uri=True,
         )
         for config_section, subconfig_or_value in config.items():
             task.connect(subconfig_or_value, name=config_section)
 
         # Connect 2 models to the task, we will periodically update their weights later on
         if log_best_dir:
-            best_model = OutputModel(task=task, framework="spaCy", name='Best Model')
+            best_model = OutputModel(task=task, framework="spaCy", name="Best Model")
         if log_latest_dir:
-            last_model = OutputModel(task=task, framework="spaCy", name='Last Model')
+            last_model = OutputModel(task=task, framework="spaCy", name="Last Model")
 
         console_log_step, console_finalize = console(nlp, stdout, stderr)
 
         if log_dataset_dir:
             dataset = Dataset.create(
                 dataset_project=project_name,
-                dataset_name=os.path.basename(log_dataset_dir)
+                dataset_name=os.path.basename(log_dataset_dir),
             )
             dataset.add_files(log_dataset_dir)
             dataset.finalize(auto_upload=True)
-            task.set_user_properties({
-                "name": "Created Dataset ID",
-                "value": f'<a href="{dataset._task.get_output_log_web_page()}">{dataset.id}</a>'
-            })
+            task.set_user_properties(
+                {
+                    "name": "Created Dataset ID",
+                    "value": f'<a href="{dataset._task.get_output_log_web_page()}">{dataset.id}</a>',
+                }
+            )
 
         def log_step(info: Optional[Dict[str, Any]]):
             console_log_step(info)
@@ -70,14 +72,16 @@ def clearml_logger_v1(
                 score = info["score"]
                 other_scores = info["other_scores"]
                 losses = info["losses"]
-                task.get_logger().report_scalar("Score", "Score", iteration=info["step"], value=score)
+                task.get_logger().report_scalar(
+                    "Score", "Score", iteration=info["step"], value=score
+                )
                 if losses:
                     for metric, metric_value in losses.items():
                         task.get_logger().report_scalar(
                             title=f"loss_{metric}",
                             series=f"loss_{metric}",
                             iteration=info["step"],
-                            value=metric_value
+                            value=metric_value,
                         )
                 if isinstance(other_scores, dict):
                     # other_scores is usually a nested dict, so group they by the first key and flatten the rest
@@ -85,33 +89,41 @@ def clearml_logger_v1(
                     for metric, metric_value in other_scores.items():
                         if isinstance(metric_value, dict):
                             sub_metrics_dict = util.dict_to_dot(metric_value)
-                            for sub_metric, sub_metric_value in sub_metrics_dict.items():
+                            for (
+                                sub_metric,
+                                sub_metric_value,
+                            ) in sub_metrics_dict.items():
                                 # Scalars with the same title get plotted on the same graph as multiple traces
                                 # This saves a lot of space in the UI
                                 task.get_logger().report_scalar(
                                     title=metric,
                                     series=sub_metric,
                                     iteration=info["step"],
-                                    value=sub_metric_value
+                                    value=sub_metric_value,
                                 )
                         elif isinstance(metric_value, (float, int)):
-                            task.get_logger().report_scalar(metric, metric, iteration=info["step"], value=metric_value)
+                            task.get_logger().report_scalar(
+                                metric,
+                                metric,
+                                iteration=info["step"],
+                                value=metric_value,
+                            )
                 if model_log_interval and info.get("output_path"):
-                    if (
-                        info["step"] % model_log_interval == 0
-                        and info["step"] != 0
-                    ):
+                    if info["step"] % model_log_interval == 0 and info["step"] != 0:
                         if log_latest_dir:
                             last_model.update_weights_package(
                                 weights_path=log_latest_dir,
                                 auto_delete_file=False,
-                                target_filename='last_model'
+                                target_filename="last_model",
                             )
-                        if log_best_dir and info["score"] == max(info["checkpoints"])[0]:
+                        if (
+                            log_best_dir
+                            and info["score"] == max(info["checkpoints"])[0]
+                        ):
                             best_model.update_weights_package(
                                 weights_path=log_best_dir,
                                 auto_delete_file=False,
-                                target_filename='best_model'
+                                target_filename="best_model",
                             )
 
         def finalize() -> None:
