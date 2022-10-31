@@ -62,7 +62,7 @@ def clearml_logger_v1(
             task.set_user_properties(
                 {
                     "name": "Created Dataset ID",
-                    "value": f'<a href="{dataset._task.get_output_log_web_page()}">{dataset.id}</a>',
+                    "value": dataset.id,
                 }
             )
 
