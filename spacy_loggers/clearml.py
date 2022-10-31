@@ -9,10 +9,10 @@ from spacy.training.loggers import console_logger
 # entry point: spacy.ClearMLLogger.v1
 def clearml_logger_v1(
     project_name: str,
+    task_name: str,
     remove_config_values: List[str] = [],
     model_log_interval: Optional[int] = None,
     log_dataset_dir: Optional[str] = None,
-    task_name: Optional[str] = None,
     log_best_dir: Optional[str] = None,
     log_latest_dir: Optional[str] = None,
 ):
@@ -38,7 +38,7 @@ def clearml_logger_v1(
         config = util.dot_to_dict(config_dot)
         task = Task.init(
             project_name=project_name,
-            task_name=task_name if task_name else "spaCy Training",
+            task_name=task_name,
             output_uri=True,
         )
         for config_section, subconfig_or_value in config.items():
@@ -69,12 +69,13 @@ def clearml_logger_v1(
         def log_step(info: Optional[Dict[str, Any]]):
             console_log_step(info)
             if info is not None:
-                score = info["score"]
-                other_scores = info["other_scores"]
-                losses = info["losses"]
-                task.get_logger().report_scalar(
-                    "Score", "Score", iteration=info["step"], value=score
-                )
+                score = info.get("score")
+                other_scores = info.get("other_scores")
+                losses = info.get("losses")
+                if score:
+                    task.get_logger().report_scalar(
+                        "Score", "Score", iteration=info["step"], value=score
+                    )
                 if losses:
                     for metric, metric_value in losses.items():
                         task.get_logger().report_scalar(
