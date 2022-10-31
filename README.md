@@ -12,6 +12,7 @@ library.
 
 - [Weights & Biases](https://www.wandb.com)
 - [MLflow](https://www.mlflow.org/)
+- [ClearML](https://www.clear.ml/)
 
 If you'd like to add a new logger or logging option, please submit a PR to this
 repo!
@@ -139,3 +140,71 @@ remove_config_values = ["paths.train", "paths.dev", "corpora.train.path", "corpo
 | `nested`               | `bool`                     | Controls whether run is nested in parent run. `True` creates a nested run (default: `False`).                                                                                                                           |
 | `tags`                 | `Optional[Dict[str, Any]]` | A dictionary of string keys and values to set as tags on the run. If a run is being resumed, these tags are set on the resumed run. If a new run is being created, these tags are set on the new run (default: `None`). |
 | `remove_config_values` | `List[str]`                | A list of values to exclude from the config before it is uploaded to MLflow (default: `[]`).                                                                                                                            |
+
+## ClearMLLogger
+
+### Installation
+
+This logger requires `clearml` to be installed and configured:
+
+```bash
+pip install clearml
+clearml-init
+```
+
+### Usage
+
+`spacy.ClearMLLogger.v1` is a logger that tracks the results of each training step
+using the [ClearML](https://www.clear.ml/) tool. To use
+this logger, ClearML should be installed and you should have initialized (using the command above).
+The logger will send all the gathered information to your ClearML server, either [the hosted free tier](https://app.clear.ml) 
+or the open source [self-hosted server](https://github.com/allegroai/clearml-server). This logger captures the following information, all of which is visible in the ClearML web UI:
+
+- The full spaCy config file contents.
+- Code information such as git repository, commit ID and uncommitted changes.
+- Full console output.
+- Miscellaneous info such as time, python version and hardware information.
+- Output scalars:
+    - The final score is logged under the scalar `score`.
+    - Individual component scores are grouped together on one scalar plot (filterable using the web UI).
+    - Loss values of different components are logged with the `loss_` prefix.
+
+In addition to the above, the following artifacts can also be optionally captured:
+
+- Best model directory (zipped).
+- Latest model directory (zipped).
+- Dataset used to train.
+	- Versioned using ClearML Data and linked to under Configuration -> User Properties on the web UI.
+
+
+**Note** that by default, the full (interpolated)
+[training config](https://spacy.io/usage/training#config) is sent over to 
+ClearML. If you prefer to **exclude certain information** such as path
+names, you can list those fields in "dot notation" in the
+`remove_config_values` parameter. These fields will then be removed from the
+config before uploading, but will otherwise remain in the config file stored
+on your local system.
+
+### Example config
+
+```ini
+[training.logger]
+@loggers = "spacy.ClearMLLogger.v1"
+project_name = "Hello ClearML!"
+task_name = "My spaCy Task"
+model_log_interval = 1000
+log_best_dir = training/model-best
+log_latest_dir = training/model-last
+log_dataset_dir = corpus
+remove_config_values = ["paths.train", "paths.dev", "corpora.train.path", "corpora.dev.path"]
+```
+
+| Name                   | Type            | Description                                                                                                                                                                                                                     |
+| ---------------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `project_name`         | `str`           | The name of the project in the ClearML interface. The project will be created automatically if it doesn't exist yet.                                                                                                            |
+| `task_name`            | `str`           | The name of the ClearML task. A task is an experiment that lives inside a project. Can be non-unique.                                                                                                                           |
+| `remove_config_values` | `List[str]`     | A list of values to exclude from the config before it is uploaded to ClearML (default: `[]`).                                                                                                                                   |
+| `model_log_interval`   | `Optional[int]` | Steps to wait between logging model checkpoints to the ClearML dasboard (default: `None`). Will have no effect without also setting `log_best_dir` or `log_latest_dir`.                                                         |
+| `log_best_dir`         | `Optional[str]` | Directory containing the best trained model as saved by spaCy (by default in `training/model-best`), to be logged and versioned as a ClearML artifact (default: `None`)                                                         |
+| `log_latest_dir`       | `Optional[str]` | Directory containing the latest trained model as saved by spaCy (by default in `training/model-last`), to be logged and versioned as a ClearML artifact (default: `None`)                                                       |
+| `log_dataset_dir`      | `Optional[str]` | Directory containing the dataset to be logged and versioned as a [ClearML Dataset](https://clear.ml/docs/latest/docs/clearml_data/clearml_data/) (default: `None`).                                                             |
