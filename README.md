@@ -191,6 +191,7 @@ on your local system.
 [training.logger]
 @loggers = "spacy.ClearMLLogger.v1"
 project_name = "Hello ClearML!"
+task_name = "My spaCy Task"
 model_log_interval = 1000
 log_best_dir = training/model-best
 log_latest_dir = training/model-last
@@ -201,7 +202,7 @@ remove_config_values = ["paths.train", "paths.dev", "corpora.train.path", "corpo
 | Name                   | Type            | Description                                                                                                                                                                                                                     |
 | ---------------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `project_name`         | `str`           | The name of the project in the ClearML interface. The project will be created automatically if it doesn't exist yet.                                                                                                            |
-| `task_name`            | `Optional[str]` | The name of the ClearML task. A task is an experiment that lives inside a project. Can be non-unique. (default: `spaCy Training`).                                                                                              |
+| `task_name`            | `str`           | The name of the ClearML task. A task is an experiment that lives inside a project. Can be non-unique.                                                                                                                           |
 | `remove_config_values` | `List[str]`     | A list of values to exclude from the config before it is uploaded to ClearML (default: `[]`).                                                                                                                                   |
 | `model_log_interval`   | `Optional[int]` | Steps to wait between logging model checkpoints to the ClearML dasboard (default: `None`). Will have no effect without also setting `log_best_dir` or `log_latest_dir`.                                                         |
 | `log_best_dir`         | `Optional[str]` | Directory containing the best trained model as saved by spaCy (by default in `training/model-best`), to be logged and versioned as a ClearML artifact (default: `None`)                                                         |
