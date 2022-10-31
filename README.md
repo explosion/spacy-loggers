@@ -158,27 +158,28 @@ clearml-init
 using the [ClearML](https://www.clear.ml/) tool. To use
 this logger, ClearML should be installed and you should have initialized (using the command above).
 The logger will send all the gathered information to your ClearML server, either [the hosted free tier](https://app.clear.ml) 
-or the open source [self-hosted server](https://github.com/allegroai/clearml-server). This logger captures all the following information (all visible in the web UI):
+or the open source [self-hosted server](https://github.com/allegroai/clearml-server). This logger captures the following information, all of which is visible in the ClearML web UI:
 
-- The full spaCy config file contents
+- The full spaCy config file contents.
 - Code information such as git repository, commit ID and uncommitted changes.
-- Full console output
-- Miscellaneous info such as time, python version and hardware information
+- Full console output.
+- Miscellaneous info such as time, python version and hardware information.
 - Output scalars:
     - The final score is logged under the scalar `score`.
-    - Individual component scores are grouped together on one scalar plot, use the web UI to filter.
+    - Individual component scores are grouped together on one scalar plot (filterable using the web UI).
     - Loss values of different components are logged with the `loss_` prefix.
 
-Then optionally, depending on the setting below, the following can be captured:
+In addition to the above, the following artifacts can also be optionally captured:
 
-- Best model directory (zipped)
-- Latest model directory (zipped)
-- Dataset used to train (will be versioned using ClearML Data and linked to under Configuration -> User Properties)
+- Best model directory (zipped).
+- Latest model directory (zipped).
+- Dataset used to train.
+	- Versioned using ClearML Data and linked to under Configuration -> User Properties on the web UI.
 
 
 **Note** that by default, the full (interpolated)
 [training config](https://spacy.io/usage/training#config) is sent over to 
-MLflow. If you prefer to **exclude certain information** such as path
+ClearML. If you prefer to **exclude certain information** such as path
 names, you can list those fields in "dot notation" in the
 `remove_config_values` parameter. These fields will then be removed from the
 config before uploading, but will otherwise remain in the config file stored

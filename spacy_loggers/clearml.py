@@ -23,7 +23,7 @@ def clearml_logger_v1(
         raise ImportError(
             "The 'clearml' library could not be found - did you install it? "
             "Alternatively, specify the 'ConsoleLogger' in the "
-            "'training.logger' config section, instead of the 'MLflowLogger'."
+            "'training.logger' config section, instead of the 'ClearMLLogger'."
         ) from exc
 
     console = console_logger(progress_bar=False)
