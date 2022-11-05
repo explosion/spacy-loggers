@@ -9,10 +9,6 @@ from spacy import util
 from spacy import Language
 from spacy import load
 from spacy.training.loggers import console_logger
-from pathlib import Path
-from loguru import logger
-# logger.remove()
-# logger.add('file.log', filter=__name__, level='DEBUG')
 
 
 class ModelDir:
@@ -22,7 +18,6 @@ class ModelDir:
     def update(self, path: str) -> None:
         self.path = path
         
-@logger.catch
 # entry point: spacy.MLflowLogger.v1
 def mlflow_logger_v1(
     run_id: Optional[str] = None,
@@ -76,21 +71,10 @@ def mlflow_logger_v1(
             latest_model = ModelDir()
             
         def log_model(path, name):
-            logger.debug(f'logging model: {path}')
             mlflow.log_artifacts(
                 path, 
                 name
             )
-            logger.debug('model artifact uploaded')
-            # Can't use below as the mlflow.spacy.log_model method seems to abort abruptly
-            # Only seems to work if it is called from within log_step but we prob don't want
-            # To force an upload every step. I don't understand this behaviour
-            # Safer to just use log_artifacts to upload the whole folder
-            # mlflow.spacy.log_model(
-            #     load(path),
-            #     'model_last_spacy'
-            # )
-            # logger.debug(f'model spacy model logged')
 
         def log_step(info: Optional[Dict[str, Any]]):
             console_log_step(info)
@@ -118,16 +102,13 @@ def mlflow_logger_v1(
                 if output_path and score == max(info["checkpoints"])[0]:
                     nlp = load(output_path)
                     mlflow.spacy.log_model(nlp, "best")
-                    logger.debug(f'Uploading "model_best" artifact from {output_path}')
                     log_model(output_path, 'model_best')
                     
 
         def finalize() -> None:
 
             if log_latest_dir:
-                logger.debug(f'Uploading "model_last" artifact from {latest_model.path}')
                 log_model(latest_model.path, 'model_last')
-                logger.debug('Uploaded model_last')
                 
             print('End run')
             console_finalize()
