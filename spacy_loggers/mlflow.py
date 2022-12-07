@@ -35,7 +35,7 @@ def mlflow_logger_v1(
     console = console_logger(progress_bar=False)
 
     def setup_logger(
-        nlp: "Language", stdout: IO = sys.stdout, stderr: IO = sys.stderr
+        nlp: Language, stdout: IO = sys.stdout, stderr: IO = sys.stderr
     ) -> Tuple[Callable[[Dict[str, Any]], None], Callable[[], None]]:
         config = nlp.config.interpolate()
         config_dot = util.dict_to_dot(config)
