@@ -2,7 +2,7 @@ import os
 from typing import Dict, Any, Tuple, Callable, List, Optional, IO
 import sys
 
-from spacy import util
+from spacy import Language, util
 from spacy.training.loggers import console_logger
 
 
@@ -29,7 +29,7 @@ def clearml_logger_v1(
     console = console_logger(progress_bar=False)
 
     def setup_logger(
-        nlp: "Language", stdout: IO = sys.stdout, stderr: IO = sys.stderr
+        nlp: Language, stdout: IO = sys.stdout, stderr: IO = sys.stderr
     ) -> Tuple[Callable[[Dict[str, Any]], None], Callable[[], None]]:
         config = nlp.config.interpolate()
         config_dot = util.dict_to_dot(config)
