@@ -1,7 +1,15 @@
 """
 Configuration utilities copied from spacy.util.
 """
-from typing import Dict, Any, Iterator, Tuple, List
+from typing import Dict, Any, Tuple, Callable, Iterator, List, Optional, IO
+
+from spacy import Language
+
+
+LoggerT = Callable[
+    [Language, IO, IO],
+    Tuple[Callable[[Optional[Dict[str, Any]]], None], Callable[[], None]],
+]
 
 
 def walk_dict(
