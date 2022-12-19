@@ -9,8 +9,8 @@ from .util import LoggerT
 
 
 def chain_logger_v1(
-    logger1: LoggerT,
-    logger2: LoggerT,
+    logger1: Optional[LoggerT] = None,
+    logger2: Optional[LoggerT] = None,
     logger3: Optional[LoggerT] = None,
     logger4: Optional[LoggerT] = None,
     logger5: Optional[LoggerT] = None,
@@ -33,6 +33,8 @@ def chain_logger_v1(
             logger9,
             logger10,
         ]
+        if not any(loggers):
+            raise ValueError("No loggers passed to chain logger")
         callbacks = [
             setup(nlp, stdout, stderr) for setup in loggers if setup is not None
         ]

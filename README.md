@@ -274,8 +274,8 @@ logger2 = {"@loggers": "spacy.ConsoleLogger.v1", "progress_bar": "true"}
 
 | Name       | Type                 | Description                                        |
 | ---------- | -------------------- | -------------------------------------------------- |
-| `logger1`  | `Callable`           | The first logger in the chain.                     |
-| `logger2`  | `Callable`           | The second logger in the chain.                    |
+| `logger1`  | `Optional[Callable]` | The first logger in the chain (default: `None`).   |
+| `logger2`  | `Optional[Callable]` | The second logger in the chain (default: `None`).  |
 | `logger3`  | `Optional[Callable]` | The third logger in the chain (default: `None`).   |
 | `logger4`  | `Optional[Callable]` | The fourth logger in the chain (default: `None`).  |
 | `logger5`  | `Optional[Callable]` | The fifth logger in the chain (default: `None`).   |
