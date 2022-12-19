@@ -9,29 +9,29 @@ from .util import LoggerT
 
 
 def chain_logger_v1(
-    first: LoggerT,
-    second: LoggerT,
-    third: Optional[LoggerT] = None,
-    fourth: Optional[LoggerT] = None,
-    fifth: Optional[LoggerT] = None,
-    sixth: Optional[LoggerT] = None,
-    seventh: Optional[LoggerT] = None,
-    eighth: Optional[LoggerT] = None,
-    ninth: Optional[LoggerT] = None,
-    tenth: Optional[LoggerT] = None,
+    logger1: LoggerT,
+    logger2: LoggerT,
+    logger3: Optional[LoggerT] = None,
+    logger4: Optional[LoggerT] = None,
+    logger5: Optional[LoggerT] = None,
+    logger6: Optional[LoggerT] = None,
+    logger7: Optional[LoggerT] = None,
+    logger8: Optional[LoggerT] = None,
+    logger9: Optional[LoggerT] = None,
+    logger10: Optional[LoggerT] = None,
 ) -> LoggerT:
     def setup_logger(nlp: Language, stdout: IO = sys.stdout, stderr: IO = sys.stderr):
         loggers = [
-            first,
-            second,
-            third,
-            fourth,
-            fifth,
-            sixth,
-            seventh,
-            eighth,
-            ninth,
-            tenth,
+            logger1,
+            logger2,
+            logger3,
+            logger4,
+            logger5,
+            logger6,
+            logger7,
+            logger8,
+            logger9,
+            logger10,
         ]
         callbacks = [
             setup(nlp, stdout, stderr) for setup in loggers if setup is not None

@@ -241,8 +241,8 @@ The following PyTorch statistics are currently supported:
 ```ini
 [training.logger]
 @loggers = "spacy.ChainLogger.v1"
-first = {"@loggers": "spacy.PyTorchLogger.v1", "prefix": "pytorch", "device": "0", "cuda_mem_metric": "current"}
-second = {"@loggers": "spacy.LookupLogger.v1", "substring": "pytorch"}
+logger1 = {"@loggers": "spacy.PyTorchLogger.v1", "prefix": "pytorch", "device": "0", "cuda_mem_metric": "current"}
+logger2 = {"@loggers": "spacy.LookupLogger.v1", "substring": "pytorch"}
 ```
 
 | Name              | Type  | Description                                                                                                                                                     |
@@ -268,22 +268,22 @@ Currently, upto 10 loggers can be chained together.
 ```ini
 [training.logger]
 @loggers = "spacy.ChainLogger.v1"
-first = {"@loggers": "spacy.PyTorchLogger.v1"}
-second = {"@loggers": "spacy.ConsoleLogger.v1", "progress_bar": "true"}
+logger1 = {"@loggers": "spacy.PyTorchLogger.v1"}
+logger2 = {"@loggers": "spacy.ConsoleLogger.v1", "progress_bar": "true"}
 ```
 
-| Name      | Type                 | Description                                        |
-| --------- | -------------------- | -------------------------------------------------- |
-| `first`   | `Callable`           | The first logger in the chain.                     |
-| `second`  | `Callable`           | The second logger in the chain.                    |
-| `third`   | `Optional[Callable]` | The third logger in the chain (default: `None`).   |
-| `fourth`  | `Optional[Callable]` | The fourth logger in the chain (default: `None`).  |
-| `fifth`   | `Optional[Callable]` | The fifth logger in the chain (default: `None`).   |
-| `sixth`   | `Optional[Callable]` | The sixth logger in the chain (default: `None`).   |
-| `seventh` | `Optional[Callable]` | The seventh logger in the chain (default: `None`). |
-| `eighth`  | `Optional[Callable]` | The eighth logger in the chain (default: `None`).  |
-| `ninth`   | `Optional[Callable]` | The ninth logger in the chain (default: `None`).   |
-| `tenth`   | `Optional[Callable]` | The tenth logger in the chain (default: `None`).   |
+| Name       | Type                 | Description                                        |
+| ---------- | -------------------- | -------------------------------------------------- |
+| `logger1`  | `Callable`           | The first logger in the chain.                     |
+| `logger2`  | `Callable`           | The second logger in the chain.                    |
+| `logger3`  | `Optional[Callable]` | The third logger in the chain (default: `None`).   |
+| `logger4`  | `Optional[Callable]` | The fourth logger in the chain (default: `None`).  |
+| `logger5`  | `Optional[Callable]` | The fifth logger in the chain (default: `None`).   |
+| `logger6`  | `Optional[Callable]` | The sixth logger in the chain (default: `None`).   |
+| `logger7`  | `Optional[Callable]` | The seventh logger in the chain (default: `None`). |
+| `logger8`  | `Optional[Callable]` | The eighth logger in the chain (default: `None`).  |
+| `logger9`  | `Optional[Callable]` | The ninth logger in the chain (default: `None`).   |
+| `logger10` | `Optional[Callable]` | The tenth logger in the chain (default: `None`).   |
 
 ## LookupLogger
 
@@ -297,8 +297,8 @@ intended to be used as a tool when developing new loggers.
 ```ini
 [training.logger]
 @loggers = "spacy.ChainLogger.v1"
-first = {"@loggers": "spacy.PyTorchLogger.v1", "prefix": "pytorch"}
-second = {"@loggers": "spacy.LookupLogger.v1", "substring": "pytorch"}
+logger1 = {"@loggers": "spacy.PyTorchLogger.v1", "prefix": "pytorch"}
+logger2 = {"@loggers": "spacy.LookupLogger.v1", "substring": "pytorch"}
 ```
 
 | Name        | Type  | Description                                                               |
