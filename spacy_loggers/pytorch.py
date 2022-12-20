@@ -1,7 +1,8 @@
 """
 A logger that queries PyTorch metrics and passes that information to downstream loggers.
 """
-from typing import Dict, Any, Optional, IO
+from typing import Dict, Any, Optional, Tuple, IO
+import re
 import sys
 
 from spacy import Language
@@ -36,6 +37,12 @@ def pytorch_logger_v1(
                 f"Got CUDA memory metric '{cuda_mem_metric}', but expected one of: '{expected_cuda_mem_metric}'"
             )
 
+        def normalize_mem_value_to_mb(name: str, value: int) -> Tuple[str, float]:
+            if "_bytes" in name:
+                return re.sub("_bytes", "_megabytes", name), value / (1024.0**2)
+            else:
+                return name, value
+
         def log_step(info: Optional[Dict[str, Any]]):
             if info is None:
                 return
@@ -45,6 +52,7 @@ def pytorch_logger_v1(
                 splits = stat.split(".")
                 if len(splits) == 3:
                     name, pool, metric = splits
+                    name, val = normalize_mem_value_to_mb(name, val)
                     if pool != cuda_mem_pool:
                         continue
                     elif cuda_mem_metric != "all" and metric != cuda_mem_metric:
@@ -52,6 +60,7 @@ def pytorch_logger_v1(
                     info[f"{prefix}.{name}.{pool}.{metric}"] = val
                 elif len(splits) == 2:
                     name, metric = splits
+                    name, val = normalize_mem_value_to_mb(name, val)
                     if cuda_mem_metric != "all" and metric != cuda_mem_metric:
                         continue
                     info[f"{prefix}.{name}.{metric}"] = val
