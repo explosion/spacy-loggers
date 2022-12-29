@@ -261,7 +261,7 @@ logger2 = {"@loggers": "spacy.LookupLogger.v1", "substring": "pytorch"}
 This logger can be used to daisy-chain multiple loggers and execute them in-order. Loggers that are executed earlier in the chain
 can pass information to those that come later by adding it to the dictionary that is passed to them.
 
-Currently, upto 10 loggers can be chained together.
+Currently, up to 10 loggers can be chained together.
 
 ### Example config
 
@@ -289,7 +289,7 @@ logger2 = {"@loggers": "spacy.ConsoleLogger.v1", "progress_bar": "true"}
 
 ### Usage
 
-This logger can be used lookup statistics in the info dictionary and print them to `stdout`. It is primarily
+This logger can be used to lookup statistics in the info dictionary and print them to `stdout`. It is primarily
 intended to be used as a tool when developing new loggers.
 
 ### Example config
