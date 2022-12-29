@@ -2,6 +2,7 @@
 Configuration utilities copied from spacy.util.
 """
 from typing import Dict, Any, Tuple, Callable, Iterator, List, Optional, IO
+import re
 
 from spacy import Language
 
@@ -49,3 +50,25 @@ def dict_to_dot(obj: Dict[str, dict]) -> Dict[str, Any]:
     RETURNS (Dict[str, Any]): The key/value pairs.
     """
     return {".".join(key): value for key, value in walk_dict(obj)}
+
+
+def setup_custom_stats_matcher(
+    regexps: Optional[List[str]] = None,
+) -> Callable[[str], bool]:
+    try:
+        compiled = []
+        if compiled is not None:
+            for regex in regexps:
+                compiled.append(re.compile(regex))
+    except:
+        raise ValueError(
+            f"Regular expression `{regex}` couldn't be compiled for logger stats matcher"
+        )
+
+    def is_match(string: str) -> bool:
+        for regex in compiled:
+            if regex.match(string):
+                return True
+        return False
+
+    return is_match
