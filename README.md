@@ -298,9 +298,9 @@ intended to be used as a tool when developing new loggers.
 [training.logger]
 @loggers = "spacy.ChainLogger.v1"
 logger1 = {"@loggers": "spacy.PyTorchLogger.v1", "prefix": "pytorch"}
-logger2 = {"@loggers": "spacy.LookupLogger.v1", "substring": "pytorch"}
+logger2 = {"@loggers": "spacy.LookupLogger.v1", "patterns": ["^(p|P)ytorch"]}
 ```
 
-| Name        | Type  | Description                                                               |
-| ----------- | ----- | ------------------------------------------------------------------------- |
-| `substring` | `str` | If a statistic's name contains this string, it's printed out to `stdout`. |
+| Name       | Type        | Description                                                                                          |
+| ---------- | ----------- | ---------------------------------------------------------------------------------------------------- |
+| `patterns` | `List[str]` | A list of regular expressions. If a statistic's name matches one of these, it's printed to `stdout`. |

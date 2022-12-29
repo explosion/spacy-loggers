@@ -59,15 +59,15 @@ def setup_custom_stats_matcher(
         compiled = []
         if compiled is not None:
             for regex in regexps:
-                compiled.append(re.compile(regex))
-    except:
+                compiled.append(re.compile(regex, flags=re.MULTILINE))
+    except re.error as err:
         raise ValueError(
             f"Regular expression `{regex}` couldn't be compiled for logger stats matcher"
-        )
+        ) from err
 
     def is_match(string: str) -> bool:
         for regex in compiled:
-            if regex.match(string):
+            if regex.search(string):
                 return True
         return False
 
