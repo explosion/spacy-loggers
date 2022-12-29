@@ -17,9 +17,8 @@ factory = "tok2vec"
 
 [training.logger]
 @loggers = "spacy.ChainLogger.v1"
-logger1 = {"@loggers": "spacy.PyTorchLogger.v1"}
-logger2 = {"@loggers": "spacy.ConsoleLogger.v1", "progress_bar": "true"}
-logger9 = {"@loggers": "spacy.ConsoleLogger.v1", "progress_bar": "true"}
+logger1 = {"@loggers": "spacy.ConsoleLogger.v1", "progress_bar": "true"}
+logger9 = {"@loggers": "spacy.LookupLogger.v1", patterns = ["test"]}
 """
 
 invalid_config_string = """
