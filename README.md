@@ -298,7 +298,7 @@ intended to be used as a tool when developing new loggers.
 [training.logger]
 @loggers = "spacy.ChainLogger.v1"
 logger1 = {"@loggers": "spacy.PyTorchLogger.v1", "prefix": "pytorch"}
-logger2 = {"@loggers": "spacy.LookupLogger.v1", "patterns": ["^(p|P)ytorch"]}
+logger2 = {"@loggers": "spacy.LookupLogger.v1", "patterns": ["^[pP]ytorch"]}
 ```
 
 | Name       | Type        | Description                                                                                          |

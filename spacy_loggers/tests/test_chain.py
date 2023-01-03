@@ -40,8 +40,8 @@ factory = "tok2vec"
 
 def test_load_from_config():
     valid_logger, nlp = load_logger_from_config(valid_config_string)
-    _, _ = valid_logger(nlp)
+    valid_logger(nlp)
 
     with pytest.raises(ValueError, match="No loggers"):
         invalid_logger, nlp = load_logger_from_config(invalid_config_string)
-        _, _ = invalid_logger(nlp)
+        invalid_logger(nlp)
