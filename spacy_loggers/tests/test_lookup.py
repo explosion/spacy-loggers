@@ -19,7 +19,7 @@ factory = "tok2vec"
 
 [training.logger]
 @loggers = "spacy.LookupLogger.v1"
-patterns = ["^(p|P)ytorch", "zeppelin" ]
+patterns = ["^[pP]ytorch", "zeppelin" ]
 """
 
 invalid_config_string_empty = """
