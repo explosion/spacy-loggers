@@ -54,12 +54,12 @@ def dict_to_dot(obj: Dict[str, dict]) -> Dict[str, Any]:
     return {".".join(key): value for key, value in walk_dict(obj)}
 
 
-def setup_custom_stats_matcher(
+def matcher_for_regex_patterns(
     regexps: Optional[List[str]] = None,
 ) -> Callable[[str], bool]:
     try:
         compiled = []
-        if compiled is not None:
+        if regexps is not None:
             for regex in regexps:
                 compiled.append(re.compile(regex, flags=re.MULTILINE))
     except re.error as err:

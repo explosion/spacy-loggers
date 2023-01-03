@@ -5,14 +5,14 @@ from typing import Dict, Any, Optional, IO, List
 import sys
 
 from spacy import Language
-from .util import dict_to_dot, LoggerT, setup_custom_stats_matcher
+from .util import dict_to_dot, LoggerT, matcher_for_regex_patterns
 
 
 def lookup_logger_v1(patterns: List[str]) -> LoggerT:
     def setup_logger(nlp: Language, stdout: IO = sys.stdout, stderr: IO = sys.stderr):
         if len(patterns) == 0:
-            raise ValueError("Lookup logger has no patterns")
-        match_stat = setup_custom_stats_matcher(patterns)
+            raise ValueError("Lookup logger should receive at least one pattern")
+        match_stat = matcher_for_regex_patterns(patterns)
 
         def log_step(info: Optional[Dict[str, Any]]):
             if info is None:

@@ -1,7 +1,7 @@
 import pytest
 import re
 
-from spacy_loggers.util import setup_custom_stats_matcher
+from spacy_loggers.util import matcher_for_regex_patterns
 from .util import load_logger_from_config
 
 
@@ -61,7 +61,7 @@ def test_load_from_config():
     valid_logger, nlp = load_logger_from_config(valid_config_string)
     _, _ = valid_logger(nlp)
 
-    with pytest.raises(ValueError, match="no patterns"):
+    with pytest.raises(ValueError, match="at least one pattern"):
         invalid_logger, nlp = load_logger_from_config(invalid_config_string_empty)
         _, _ = invalid_logger(nlp)
 
@@ -73,7 +73,7 @@ def test_load_from_config():
 
 
 def test_custom_stats_matcher():
-    patterns = ["^(p|P)ytorch", "zeppelin$"]
+    patterns = ["^[pP]ytorch", "zeppelin$"]
     inputs = [
         "no match",
         "torch",
@@ -84,8 +84,8 @@ def test_custom_stats_matcher():
     ]
     outputs = [False, False, False, True, True, True]
 
-    matcher = setup_custom_stats_matcher(patterns)
+    matcher = matcher_for_regex_patterns(patterns)
     assert [matcher(x) for x in inputs] == outputs
 
     with pytest.raises(ValueError, match="couldn't be compiled"):
-        _ = setup_custom_stats_matcher([")"])
+        _ = matcher_for_regex_patterns([")"])
