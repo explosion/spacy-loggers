@@ -11,6 +11,13 @@ from spacy import load
 from spacy.training.loggers import console_logger
 
 
+class ModelDir:
+    def __init__(self) -> None:
+        self.path = None
+
+    def update(self, path: str) -> None:
+        self.path = path
+        
 # entry point: spacy.MLflowLogger.v1
 def mlflow_logger_v1(
     run_id: Optional[str] = None,
@@ -19,6 +26,7 @@ def mlflow_logger_v1(
     nested: bool = False,
     tags: Optional[Dict[str, Any]] = None,
     remove_config_values: List[str] = [],
+    log_latest_dir: bool = True,
 ):
     try:
         import mlflow
@@ -33,7 +41,7 @@ def mlflow_logger_v1(
         )
 
     console = console_logger(progress_bar=False)
-
+    
     def setup_logger(
         nlp: Language, stdout: IO = sys.stdout, stderr: IO = sys.stderr
     ) -> Tuple[Callable[[Dict[str, Any]], None], Callable[[], None]]:
@@ -58,6 +66,15 @@ def mlflow_logger_v1(
             mlflow.log_params({k.replace("@", ""): v for k, v in batch})
 
         console_log_step, console_finalize = console(nlp, stdout, stderr)
+        
+        if log_latest_dir:
+            latest_model = ModelDir()
+            
+        def log_model(path, name):
+            mlflow.log_artifacts(
+                path, 
+                name
+            )
 
         def log_step(info: Optional[Dict[str, Any]]):
             console_log_step(info)
@@ -66,23 +83,34 @@ def mlflow_logger_v1(
                 other_scores = info["other_scores"]
                 losses = info["losses"]
                 output_path = info.get("output_path", None)
+                if log_latest_dir:
+                    latest_model.update(output_path)
+                
                 if score is not None:
-                    mlflow.log_metric("score", score)
+                    mlflow.log_metric("score", score, info["step"])
                 if losses:
-                    mlflow.log_metrics({f"loss_{k}": v for k, v in losses.items()})
+                    mlflow.log_metrics({f"loss_{k}": v for k, v in losses.items()}, info["step"])
                 if isinstance(other_scores, dict):
                     mlflow.log_metrics(
                         {
                             k: v
                             for k, v in util.dict_to_dot(other_scores).items()
                             if isinstance(v, float) or isinstance(v, int)
-                        }
+                        },
+                        info["step"]
                     )
                 if output_path and score == max(info["checkpoints"])[0]:
                     nlp = load(output_path)
                     mlflow.spacy.log_model(nlp, "best")
+                    log_model(output_path, 'model_best')
+                    
 
         def finalize() -> None:
+
+            if log_latest_dir:
+                log_model(latest_model.path, 'model_last')
+                
+            print('End run')
             console_finalize()
             mlflow.end_run()
 
