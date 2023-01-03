@@ -8,6 +8,9 @@ FUNCTIONS = [
     ("loggers", "spacy.WandbLogger.v4"),
     ("loggers", "spacy.MLflowLogger.v1"),
     ("loggers", "spacy.ClearMLLogger.v1"),
+    ("loggers", "spacy.ChainLogger.v1"),
+    ("loggers", "spacy.PyTorchLogger.v1"),
+    ("loggers", "spacy.LookupLogger.v1"),
 ]
 
 
