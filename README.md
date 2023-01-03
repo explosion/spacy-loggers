@@ -158,7 +158,7 @@ clearml-init
 
 ### Usage
 
-`spacy.ClearMLLogger.v1` is a logger that tracks the results of each training step
+`spacy.ClearMLLogger.v2` is a logger that tracks the results of each training step
 using the [ClearML](https://www.clear.ml/) tool. To use
 this logger, ClearML should be installed and you should have initialized (using the command above).
 The logger will send all the gathered information to your ClearML server, either [the hosted free tier](https://app.clear.ml)
@@ -180,6 +180,10 @@ In addition to the above, the following artifacts can also be optionally capture
 - Dataset used to train.
   - Versioned using ClearML Data and linked to under Configuration -> User Properties on the web UI.
 
+`spacy.ClearMLLogger.v1` and below automatically call the default console logger.
+However, starting with `spacy.ClearMLLogger.v2`, console logging must be activated
+through the use of the [ChainLogger](#chainlogger).
+
 **Note** that by default, the full (interpolated)
 [training config](https://spacy.io/usage/training#config) is sent over to
 ClearML. If you prefer to **exclude certain information** such as path
@@ -192,7 +196,7 @@ on your local system.
 
 ```ini
 [training.logger]
-@loggers = "spacy.ClearMLLogger.v1"
+@loggers = "spacy.ClearMLLogger.v2"
 project_name = "Hello ClearML!"
 task_name = "My spaCy Task"
 model_log_interval = 1000
@@ -202,15 +206,16 @@ log_dataset_dir = corpus
 remove_config_values = ["paths.train", "paths.dev", "corpora.train.path", "corpora.dev.path"]
 ```
 
-| Name                   | Type            | Description                                                                                                                                                               |
-| ---------------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `project_name`         | `str`           | The name of the project in the ClearML interface. The project will be created automatically if it doesn't exist yet.                                                      |
-| `task_name`            | `str`           | The name of the ClearML task. A task is an experiment that lives inside a project. Can be non-unique.                                                                     |
-| `remove_config_values` | `List[str]`     | A list of values to exclude from the config before it is uploaded to ClearML (default: `[]`).                                                                             |
-| `model_log_interval`   | `Optional[int]` | Steps to wait between logging model checkpoints to the ClearML dasboard (default: `None`). Will have no effect without also setting `log_best_dir` or `log_latest_dir`.   |
-| `log_best_dir`         | `Optional[str]` | Directory containing the best trained model as saved by spaCy (by default in `training/model-best`), to be logged and versioned as a ClearML artifact (default: `None`)   |
-| `log_latest_dir`       | `Optional[str]` | Directory containing the latest trained model as saved by spaCy (by default in `training/model-last`), to be logged and versioned as a ClearML artifact (default: `None`) |
-| `log_dataset_dir`      | `Optional[str]` | Directory containing the dataset to be logged and versioned as a [ClearML Dataset](https://clear.ml/docs/latest/docs/clearml_data/clearml_data/) (default: `None`).       |
+| Name                   | Type                  | Description                                                                                                                                                                                                                        |
+| ---------------------- | --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `project_name`         | `str`                 | The name of the project in the ClearML interface. The project will be created automatically if it doesn't exist yet.                                                                                                               |
+| `task_name`            | `str`                 | The name of the ClearML task. A task is an experiment that lives inside a project. Can be non-unique.                                                                                                                              |
+| `remove_config_values` | `List[str]`           | A list of values to exclude from the config before it is uploaded to ClearML (default: `[]`).                                                                                                                                      |
+| `model_log_interval`   | `Optional[int]`       | Steps to wait between logging model checkpoints to the ClearML dasboard (default: `None`). Will have no effect without also setting `log_best_dir` or `log_latest_dir`.                                                            |
+| `log_best_dir`         | `Optional[str]`       | Directory containing the best trained model as saved by spaCy (by default in `training/model-best`), to be logged and versioned as a ClearML artifact (default: `None`)                                                            |
+| `log_latest_dir`       | `Optional[str]`       | Directory containing the latest trained model as saved by spaCy (by default in `training/model-last`), to be logged and versioned as a ClearML artifact (default: `None`)                                                          |
+| `log_dataset_dir`      | `Optional[str]`       | Directory containing the dataset to be logged and versioned as a [ClearML Dataset](https://clear.ml/docs/latest/docs/clearml_data/clearml_data/) (default: `None`).                                                                |
+| `log_custom_stats`     | `Optional[List[str]]` | A list of regular expressions that will be applied to the info dictionary passed to the logger (default: `None`). Statistics and metrics that match these regexps will be automatically logged. Added in `spacy.ClearMLLogger.v2`. |
 
 ## PyTorchLogger
 
