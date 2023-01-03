@@ -50,13 +50,17 @@ wandb login
 
 ### Usage
 
-`spacy.WandbLogger.v4` is a logger that sends the results of each training step
+`spacy.WandbLogger.v5` is a logger that sends the results of each training step
 to the dashboard of the [Weights & Biases](https://www.wandb.com/) tool. To use
 this logger, Weights & Biases should be installed, and you should be logged in.
 The logger will send the full config file to W&B, as well as various system
 information such as memory utilization, network traffic, disk IO, GPU
 statistics, etc. This will also include information such as your hostname and
 operating system, as well as the location of your Python executable.
+
+`spacy.WandbLogger.v4` and below automatically call the default console logger.
+However, starting with `spacy.WandbLogger.v5`, console logging must be activated
+through the use of the [ChainLogger](#chainlogger).
 
 **Note** that by default, the full (interpolated)
 [training config](https://spacy.io/usage/training#config) is sent over to the
@@ -70,7 +74,7 @@ on your local system.
 
 ```ini
 [training.logger]
-@loggers = "spacy.WandbLogger.v4"
+@loggers = "spacy.WandbLogger.v5"
 project_name = "monitor_spacy_training"
 remove_config_values = ["paths.train", "paths.dev", "corpora.train.path", "corpora.dev.path"]
 log_dataset_dir = "corpus"
