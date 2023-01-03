@@ -59,17 +59,17 @@ patterns = [")"]
 
 def test_load_from_config():
     valid_logger, nlp = load_logger_from_config(valid_config_string)
-    _, _ = valid_logger(nlp)
+    valid_logger(nlp)
 
     with pytest.raises(ValueError, match="at least one pattern"):
         invalid_logger, nlp = load_logger_from_config(invalid_config_string_empty)
-        _, _ = invalid_logger(nlp)
+        invalid_logger(nlp)
 
     with pytest.raises(ValueError, match="couldn't be compiled"):
         invalid_logger, nlp = load_logger_from_config(
             invalid_config_string_incorrect_pattern
         )
-        _, _ = invalid_logger(nlp)
+        invalid_logger(nlp)
 
 
 def test_custom_stats_matcher():
@@ -88,4 +88,4 @@ def test_custom_stats_matcher():
     assert [matcher(x) for x in inputs] == outputs
 
     with pytest.raises(ValueError, match="couldn't be compiled"):
-        _ = matcher_for_regex_patterns([")"])
+        matcher_for_regex_patterns([")"])
