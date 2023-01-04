@@ -23,7 +23,7 @@ def mlflow_logger_v2(
     remove_config_values: List[str] = SimpleFrozenList(),
     log_custom_stats: Optional[List[str]] = None,
 ) -> LoggerT:
-    """Create a logger that interoperates with the MLflow framework.
+    """Creates a logger that interoperates with the MLflow framework.
 
     Args:
         run_id (Optional[str]):
@@ -81,8 +81,8 @@ def mlflow_logger_v1(
     nested: bool = False,
     tags: Optional[Dict[str, Any]] = None,
     remove_config_values: List[str] = SimpleFrozenList(),
-):
-    """Create a logger that interoperates with the MLflow framework.
+) -> LoggerT:
+    """Creates a logger that interoperates with the MLflow framework.
 
     Args:
         run_id (Optional[str]):
