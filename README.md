@@ -106,7 +106,7 @@ pip install mlflow
 
 ### Usage
 
-`spacy.MLflowLogger.v1` is a logger that tracks the results of each training step
+`spacy.MLflowLogger.v2` is a logger that tracks the results of each training step
 using the [MLflow](https://www.mlflow.org/) tool. To use
 this logger, MLflow should be installed. At the beginning of each model training
 operation, the logger will initialize a new MLflow run and set it as the active
@@ -123,6 +123,11 @@ the following actions are performed:
 
 By default, the tracking API writes data into files in a local `./mlruns` directory.
 
+`spacy.MLflowLogger.v1` and below automatically call the [default console logger](https://spacy.io/api/top-level#ConsoleLogger).
+However, starting with `spacy.MLflowLogger.v2`, console logging must be activated
+through the use of the [ChainLogger](#chainlogger). This allows the user to configure
+the console logger's parameters according to their preferences.
+
 **Note** that by default, the full (interpolated)
 [training config](https://spacy.io/usage/training#config) is sent over to
 MLflow. If you prefer to **exclude certain information** such as path
@@ -135,21 +140,22 @@ on your local system.
 
 ```ini
 [training.logger]
-@loggers = "spacy.MLflowLogger.v1"
+@loggers = "spacy.MLflowLogger.v2"
 experiment_id = "1"
 run_name = "with_fast_alignments"
 nested = False
 remove_config_values = ["paths.train", "paths.dev", "corpora.train.path", "corpora.dev.path"]
 ```
 
-| Name                   | Type                       | Description                                                                                                                                                                                                             |
-| ---------------------- | -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `run_id`               | `Optional[str]`            | Unique ID of an existing MLflow run to which parameters and metrics are logged. Can be omitted if `experiment_id` and `run_id` are provided (default: `None`).                                                          |
-| `experiment_id`        | `Optional[str]`            | ID of an existing experiment under which to create the current run. Only applicable when `run_id` is `None` (default: `None`).                                                                                          |
-| `run_name`             | `Optional[str]`            | Name of new run. Only applicable when `run_id` is `None` (default: `None`).                                                                                                                                             |
-| `nested`               | `bool`                     | Controls whether run is nested in parent run. `True` creates a nested run (default: `False`).                                                                                                                           |
-| `tags`                 | `Optional[Dict[str, Any]]` | A dictionary of string keys and values to set as tags on the run. If a run is being resumed, these tags are set on the resumed run. If a new run is being created, these tags are set on the new run (default: `None`). |
-| `remove_config_values` | `List[str]`                | A list of values to exclude from the config before it is uploaded to MLflow (default: `[]`).                                                                                                                            |
+| Name                   | Type                       | Description                                                                                                                                                                                                                       |
+| ---------------------- | -------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `run_id`               | `Optional[str]`            | Unique ID of an existing MLflow run to which parameters and metrics are logged. Can be omitted if `experiment_id` and `run_id` are provided (default: `None`).                                                                    |
+| `experiment_id`        | `Optional[str]`            | ID of an existing experiment under which to create the current run. Only applicable when `run_id` is `None` (default: `None`).                                                                                                    |
+| `run_name`             | `Optional[str]`            | Name of new run. Only applicable when `run_id` is `None` (default: `None`).                                                                                                                                                       |
+| `nested`               | `bool`                     | Controls whether run is nested in parent run. `True` creates a nested run (default: `False`).                                                                                                                                     |
+| `tags`                 | `Optional[Dict[str, Any]]` | A dictionary of string keys and values to set as tags on the run. If a run is being resumed, these tags are set on the resumed run. If a new run is being created, these tags are set on the new run (default: `None`).           |
+| `remove_config_values` | `List[str]`                | A list of values to exclude from the config before it is uploaded to MLflow (default: `[]`).                                                                                                                                      |
+| `log_custom_stats`     | `Optional[List[str]]`      | A list of regular expressions that will be applied to the info dictionary passed to the logger (default: `None`). Statistics and metrics that match these regexps will be automatically logged. Added in `spacy.MLflowLogger.v2`. |
 
 ## ClearMLLogger
 

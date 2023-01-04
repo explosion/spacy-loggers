@@ -8,6 +8,7 @@ FUNCTIONS = [
     ("loggers", "spacy.WandbLogger.v4"),
     ("loggers", "spacy.WandbLogger.v5"),
     ("loggers", "spacy.MLflowLogger.v1"),
+    ("loggers", "spacy.MLflowLogger.v2"),
     ("loggers", "spacy.ClearMLLogger.v1"),
     ("loggers", "spacy.ClearMLLogger.v2"),
     ("loggers", "spacy.ChainLogger.v1"),
