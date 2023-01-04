@@ -117,9 +117,10 @@ the following actions are performed:
 
 By default, the tracking API writes data into files in a local `./mlruns` directory.
 
-`spacy.MLflowLogger.v1` and below automatically call the default console logger.
+`spacy.MLflowLogger.v1` and below automatically call the [default console logger](https://spacy.io/api/top-level#ConsoleLogger).
 However, starting with `spacy.MLflowLogger.v2`, console logging must be activated
-through the use of the [ChainLogger](#chainlogger).
+through the use of the [ChainLogger](#chainlogger). This allows the user to configure
+the console logger's parameters according to their preferences.
 
 **Note** that by default, the full (interpolated)
 [training config](https://spacy.io/usage/training#config) is sent over to
