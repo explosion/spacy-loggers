@@ -2,7 +2,7 @@
 A logger that logs training activity to Weights and Biases.
 """
 
-from typing import Dict, Any, Tuple, Callable, List, Optional, IO
+from typing import Dict, Any, Tuple, Callable, List, IO, Optional
 from types import ModuleType
 import sys
 
@@ -10,13 +10,13 @@ from spacy import Language
 from spacy.util import SimpleFrozenList
 
 from .util import dict_to_dot, dot_to_dict, matcher_for_regex_patterns
-from .util import setup_default_console_logger
+from .util import setup_default_console_logger, LoggerT
 
 
 # entry point: spacy.WandbLogger.v5
 def wandb_logger_v5(
     project_name: str,
-    remove_config_values: List[str] = [],
+    remove_config_values: List[str] = SimpleFrozenList(),
     model_log_interval: Optional[int] = None,
     log_dataset_dir: Optional[str] = None,
     entity: Optional[str] = None,
@@ -24,7 +24,32 @@ def wandb_logger_v5(
     log_best_dir: Optional[str] = None,
     log_latest_dir: Optional[str] = None,
     log_custom_stats: Optional[List[str]] = None,
-):
+) -> LoggerT:
+    """Creates a logger that interoperates with the Weights & Biases framework.
+
+    Args:
+        project_name (str):
+            The name of the project in the Weights & Biases interface. The project will be created automatically if it doesn't exist yet.
+        remove_config_values (List[str]):
+            A list of values to exclude from the config before it is uploaded to W&B. Defaults to [].
+        model_log_interval (Optional[int]):
+            Steps to wait between logging model checkpoints to the W&B dasboard. Defaults to None.
+        log_dataset_dir (Optional[str]):
+            Directory containing the dataset to be logged and versioned as a W&B artifact. Defaults to None.
+        entity (Optional[str]):
+            An entity is a username or team name where you're sending runs. If you don't specify an entity, the run will be sent to your default entity, which is usually your username. Defaults to None.
+        run_name (Optional[str]):
+            The name of the run. If you don't specify a run name, the name will be created by the `wandb` library. Defaults to None.
+        log_best_dir (Optional[str]):
+            Directory containing the best trained model as saved by spaCy, to be logged and versioned as a W&B artifact. Defaults to None.
+        log_latest_dir (Optional[str]):
+            Directory containing the latest trained model as saved by spaCy, to be logged and versioned as a W&B artifact. Defaults to None.
+        log_custom_stats (Optional[List[str]]):
+            A list of regular expressions that will be applied to the info dictionary passed to the logger. Statistics and metrics that match these regexps will be automatically logged. Defaults to None.
+
+    Returns:
+        LoggerT: Logger instance.
+    """
     wandb = _import_wandb()
 
     def setup_logger(
@@ -77,14 +102,37 @@ def wandb_logger_v5(
 # entry point: spacy.WandbLogger.v4
 def wandb_logger_v4(
     project_name: str,
-    remove_config_values: List[str] = [],
+    remove_config_values: List[str] = SimpleFrozenList(),
     model_log_interval: Optional[int] = None,
     log_dataset_dir: Optional[str] = None,
     entity: Optional[str] = None,
     run_name: Optional[str] = None,
     log_best_dir: Optional[str] = None,
     log_latest_dir: Optional[str] = None,
-):
+) -> LoggerT:
+    """Creates a logger that interoperates with the Weights & Biases framework.
+
+    Args:
+        project_name (str):
+            The name of the project in the Weights & Biases interface. The project will be created automatically if it doesn't exist yet.
+        remove_config_values (List[str]):
+            A list of values to exclude from the config before it is uploaded to W&B. Defaults to [].
+        model_log_interval (Optional[int]):
+            Steps to wait between logging model checkpoints to the W&B dasboard. Defaults to None.
+        log_dataset_dir (Optional[str]):
+            Directory containing the dataset to be logged and versioned as a W&B artifact. Defaults to None.
+        entity (Optional[str]):
+            An entity is a username or team name where you're sending runs. If you don't specify an entity, the run will be sent to your default entity, which is usually your username. Defaults to None.
+        run_name (Optional[str]):
+            The name of the run. If you don't specify a run name, the name will be created by the `wandb` library. Defaults to None.
+        log_best_dir (Optional[str]):
+            Directory containing the best trained model as saved by spaCy, to be logged and versioned as a W&B artifact. Defaults to None.
+        log_latest_dir (Optional[str]):
+            Directory containing the latest trained model as saved by spaCy, to be logged and versioned as a W&B artifact. Defaults to None.
+
+    Returns:
+        LoggerT: Logger instance.
+    """
     wandb = _import_wandb()
 
     def setup_logger(
@@ -140,12 +188,31 @@ def wandb_logger_v4(
 # entry point: spacy.WandbLogger.v3
 def wandb_logger_v3(
     project_name: str,
-    remove_config_values: List[str] = [],
+    remove_config_values: List[str] = SimpleFrozenList(),
     model_log_interval: Optional[int] = None,
     log_dataset_dir: Optional[str] = None,
     entity: Optional[str] = None,
     run_name: Optional[str] = None,
-):
+) -> LoggerT:
+    """Creates a logger that interoperates with the Weights & Biases framework.
+
+    Args:
+        project_name (str):
+            The name of the project in the Weights & Biases interface. The project will be created automatically if it doesn't exist yet.
+        remove_config_values (List[str]):
+            A list of values to exclude from the config before it is uploaded to W&B. Defaults to [].
+        model_log_interval (Optional[int]):
+            Steps to wait between logging model checkpoints to the W&B dasboard. Defaults to None.
+        log_dataset_dir (Optional[str]):
+            Directory containing the dataset to be logged and versioned as a W&B artifact. Defaults to None.
+        entity (Optional[str]):
+            An entity is a username or team name where you're sending runs. If you don't specify an entity, the run will be sent to your default entity, which is usually your username. Defaults to None.
+        run_name (Optional[str]):
+            The name of the run. If you don't specify a run name, the name will be created by the `wandb` library. Defaults to None.
+
+    Returns:
+        LoggerT: Logger instance.
+    """
     wandb = _import_wandb()
 
     def setup_logger(
@@ -186,10 +253,25 @@ def wandb_logger_v3(
 # entry point: spacy.WandbLogger.v2
 def wandb_logger_v2(
     project_name: str,
-    remove_config_values: List[str] = [],
+    remove_config_values: List[str] = SimpleFrozenList(),
     model_log_interval: Optional[int] = None,
     log_dataset_dir: Optional[str] = None,
-):
+) -> LoggerT:
+    """Creates a logger that interoperates with the Weights & Biases framework.
+
+    Args:
+        project_name (str):
+            The name of the project in the Weights & Biases interface. The project will be created automatically if it doesn't exist yet.
+        remove_config_values (List[str]):
+            A list of values to exclude from the config before it is uploaded to W&B. Defaults to [].
+        model_log_interval (Optional[int]):
+            Steps to wait between logging model checkpoints to the W&B dasboard. Defaults to None.
+        log_dataset_dir (Optional[str]):
+            Directory containing the dataset to be logged and versioned as a W&B artifact. Defaults to None.
+
+    Returns:
+        LoggerT: Logger instance.
+    """
     wandb = _import_wandb()
 
     def setup_logger(
@@ -222,7 +304,20 @@ def wandb_logger_v2(
 
 
 # entry point: spacy.WandbLogger.v1
-def wandb_logger_v1(project_name: str, remove_config_values: List[str] = []):
+def wandb_logger_v1(
+    project_name: str, remove_config_values: List[str] = SimpleFrozenList()
+) -> LoggerT:
+    """Creates a logger that interoperates with the Weights & Biases framework.
+
+    Args:
+        project_name (str):
+            The name of the project in the Weights & Biases interface. The project will be created automatically if it doesn't exist yet.
+        remove_config_values (List[str]):
+            A list of values to exclude from the config before it is uploaded to W&B. Defaults to [].
+
+    Returns:
+        LoggerT: Logger instance.
+    """
     wandb = _import_wandb()
 
     def setup_logger(
