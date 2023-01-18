@@ -272,7 +272,7 @@ logger2 = {"@loggers": "spacy.LookupLogger.v1", "patterns": ["pytorch"]}
 | `cuda_mem_pool`   | `str` | One of the memory pool values specified in the PyTorch docs: `all`, `large_pool`, `small_pool` (default: `all`).                                                |
 | `cuda_mem_metric` | `str` | One of the memory metric values specified in the PyTorch docs: `current`, `peak`, `allocated`, `freed`. To log all metrics, use `all` instead (default: `all`). |
 
-## CuPyLogger
+## CupyLogger
 
 ### Installation
 
@@ -284,7 +284,7 @@ pip install cupy
 
 ### Usage
 
-Similar to `PyTorchLogger`, `spacy.CuPyLogger.v1` is intended to be used with [ChainLogger](#chainlogger).
+Similar to `PyTorchLogger`, `spacy.CupyLogger.v1` is intended to be used with [ChainLogger](#chainlogger).
 It queries statistics from the CuPy backend and stores them in the info dictionary passed to it. Downstream
 loggers can thereafter lookup the statistics and log them to their preferred framework.
 
@@ -297,7 +297,7 @@ The following CuPy statistics are currently supported:
 ```ini
 [training.logger]
 @loggers = "spacy.ChainLogger.v1"
-logger1 = {"@loggers": "spacy.CuPyLogger.v1", "prefix": "cupy"}
+logger1 = {"@loggers": "spacy.CupyLogger.v1", "prefix": "cupy"}
 logger2 = {"@loggers": "spacy.LookupLogger.v1", "patterns": ["cupy"]}
 ```
 
