@@ -13,6 +13,15 @@ from .util import LoggerT
 def cupy_logger_v1(
     prefix: str = "cupy",
 ) -> LoggerT:
+    """Creates a logger that queries CuPy metrics and passes that information to downstream loggers.
+
+    Args:
+        prefix (str):
+            All metric names are prefixed with this string using dot notation, e.g: `<prefix>.<metric>`.
+
+    Returns:
+        LoggerT: Logger instance.
+    """
     try:
         import cupy
 
