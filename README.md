@@ -262,6 +262,7 @@ The following PyTorch statistics are currently supported:
 [training.logger]
 @loggers = "spacy.ChainLogger.v1"
 logger1 = {"@loggers": "spacy.PyTorchLogger.v1", "prefix": "pytorch", "device": "0", "cuda_mem_metric": "current"}
+# Alternatively, you can use any other logger that provides the `log_custom_stats` parameter.
 logger2 = {"@loggers": "spacy.LookupLogger.v1", "patterns": ["pytorch"]}
 ```
 
@@ -298,6 +299,7 @@ The following CuPy statistics are currently supported:
 [training.logger]
 @loggers = "spacy.ChainLogger.v1"
 logger1 = {"@loggers": "spacy.CupyLogger.v1", "prefix": "cupy"}
+# Alternatively, you can use any other logger that provides the `log_custom_stats` parameter.
 logger2 = {"@loggers": "spacy.LookupLogger.v1", "patterns": ["cupy"]}
 ```
 
