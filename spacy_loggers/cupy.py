@@ -38,7 +38,7 @@ def cupy_logger_v1(
         )
 
     def setup_logger(nlp: Language, stdout: IO = sys.stdout, stderr: IO = sys.stderr):
-        def to_mb(bytes: int) -> float:
+        def to_mib(bytes: int) -> float:
             return bytes / (1024.0**2)
 
         def log_step(info: Optional[Dict[str, Any]]):
@@ -58,11 +58,9 @@ def cupy_logger_v1(
                 pool_source = "default"
 
             info[f"{prefix}.pool.source"] = pool_source
-            info[f"{prefix}.pool.acquired_megabytes"] = to_mb(
-                cupy_memory_pool.total_bytes()
-            )
-            info[f"{prefix}.pool.used_megabytes"] = to_mb(cupy_memory_pool.used_bytes())
-            info[f"{prefix}.pool.free_megabytes"] = to_mb(cupy_memory_pool.free_bytes())
+            info[f"{prefix}.pool.acquired_mib"] = to_mib(cupy_memory_pool.total_bytes())
+            info[f"{prefix}.pool.used_mib"] = to_mib(cupy_memory_pool.used_bytes())
+            info[f"{prefix}.pool.free_mib"] = to_mib(cupy_memory_pool.free_bytes())
             info[f"{prefix}.pool.num_free_blocks"] = cupy_memory_pool.n_free_blocks()
 
         def finalize():
