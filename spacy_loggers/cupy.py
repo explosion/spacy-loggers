@@ -26,7 +26,10 @@ def cupy_logger_v1(
         import cupy
 
         if not has_cupy_gpu:
-            raise ImportError()
+            raise ValueError(
+                "The 'cupy' library could be loaded but GPU support couldn't be initialized - "
+                "do you have the necessary CUDA libraries installed?"
+            )
     except ImportError:
         raise ImportError(
             "The 'cupy' library could not be found - did you install it? "
