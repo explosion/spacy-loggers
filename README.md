@@ -305,7 +305,7 @@ logger2 = {"@loggers": "spacy.LookupLogger.v1", "patterns": ["cupy"]}
 
 | Name     | Type  | Description                                                                                                    |
 | -------- | ----- | -------------------------------------------------------------------------------------------------------------- |
-| `prefix` | `str` | All metric names are prefixed with this string using dot notation, e.g: `<prefix>.<metric>` (default: `cupy`). |
+| `prefix` | `str` | All metric names are prefixed with this string using dot notation, e.g: `<prefix>.<metric>` (default: `"cupy"`). |
 
 # Utility Loggers
 
