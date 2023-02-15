@@ -24,17 +24,17 @@ def cupy_logger_v1(
     """
     try:
         import cupy
-
-        if not has_cupy_gpu:
-            raise ValueError(
-                "The 'cupy' library could be loaded but GPU support couldn't be initialized - "
-                "do you have the necessary CUDA libraries installed?"
-            )
     except ImportError:
         raise ImportError(
             "The 'cupy' library could not be found - did you install it? "
             "Alternatively, specify the 'ConsoleLogger' in the "
             "'training.logger' config section, instead of the 'CuPyLogger'."
+        )
+
+    if not has_cupy_gpu:
+        raise ValueError(
+            "The 'cupy' library could be loaded but GPU support couldn't be initialized - "
+            "do you have the necessary CUDA libraries installed?"
         )
 
     def setup_logger(nlp: Language, stdout: IO = sys.stdout, stderr: IO = sys.stderr):
