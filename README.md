@@ -284,8 +284,8 @@ pip install cupy
 
 ### Usage
 
-Similar to `PyTorchLogger`, `spacy.CupyLogger.v1` does not act as a bridge between spaCy and an external framework 
-but rather is used with the [ChainLogger](#chainlogger) to facilitate the flow of metrics to other loggers. 
+Similar to `PyTorchLogger`, `spacy.CupyLogger.v1` does not act as a bridge between spaCy and an external framework
+but rather is used with the [ChainLogger](#chainlogger) to facilitate the flow of metrics to other loggers.
 The `CupyLogger` queries statistics from the CuPy backend and stores them in the info dictionary passed to it. Downstream
 loggers can thereafter lookup the statistics and log them to their preferred framework.
 
@@ -303,8 +303,8 @@ logger1 = {"@loggers": "spacy.CupyLogger.v1", "prefix": "cupy"}
 logger2 = {"@loggers": "spacy.LookupLogger.v1", "patterns": ["cupy"]}
 ```
 
-| Name     | Type  | Description                                                                                                    |
-| -------- | ----- | -------------------------------------------------------------------------------------------------------------- |
+| Name     | Type  | Description                                                                                                      |
+| -------- | ----- | ---------------------------------------------------------------------------------------------------------------- |
 | `prefix` | `str` | All metric names are prefixed with this string using dot notation, e.g: `<prefix>.<metric>` (default: `"cupy"`). |
 
 # Utility Loggers
