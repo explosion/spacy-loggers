@@ -14,6 +14,7 @@ library.
 - [MLflow](https://www.mlflow.org/)
 - [ClearML](https://www.clear.ml/)
 - [PyTorch](https://pytorch.org/)
+- [CuPy](https://github.com/cupy/cupy)
 
 `spacy-loggers` also provides additional utility loggers to facilitate interoperation
 between individual loggers.
@@ -219,17 +220,16 @@ log_dataset_dir = corpus
 remove_config_values = ["paths.train", "paths.dev", "corpora.train.path", "corpora.dev.path"]
 ```
 
-| Name                   | Type            | Description                                                                                                                                                               |
-| ---------------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `project_name`         | `str`           | The name of the project in the ClearML interface. The project will be created automatically if it doesn't exist yet.                                                      |
-| `task_name`            | `str`           | The name of the ClearML task. A task is an experiment that lives inside a project. Can be non-unique.                                                                     |
-| `remove_config_values` | `List[str]`     | A list of values to exclude from the config before it is uploaded to ClearML (default: `[]`).                                                                             |
-| `model_log_interval`   | `Optional[int]` | Steps to wait between logging model checkpoints to the ClearML dasboard (default: `None`). Will have no effect without also setting `log_best_dir` or `log_latest_dir`.   |
-| `log_dataset_dir`      | `Optional[str]` | Directory containing the dataset to be logged and versioned as a [ClearML Dataset](https://clear.ml/docs/latest/docs/clearml_data/clearml_data/) (default: `None`).       |
-| `log_best_dir`         | `Optional[str]` | Directory containing the best trained model as saved by spaCy (by default in `training/model-best`), to be logged and versioned as a ClearML artifact (default: `None`)   |
-| `log_latest_dir`       | `Optional[str]` | Directory containing the latest trained model as saved by spaCy (by default in `training/model-last`), to be logged and versioned as a ClearML artifact (default: `None`) |
-
-| `log_custom_stats` | `Optional[List[str]]` | A list of regular expressions that will be applied to the info dictionary passed to the logger (default: `None`). Statistics and metrics that match these regexps will be automatically logged. Added in `spacy.ClearMLLogger.v2`. |
+| Name                   | Type                  | Description                                                                                                                                                                                                                        |
+| ---------------------- | --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `project_name`         | `str`                 | The name of the project in the ClearML interface. The project will be created automatically if it doesn't exist yet.                                                                                                               |
+| `task_name`            | `str`                 | The name of the ClearML task. A task is an experiment that lives inside a project. Can be non-unique.                                                                                                                              |
+| `remove_config_values` | `List[str]`           | A list of values to exclude from the config before it is uploaded to ClearML (default: `[]`).                                                                                                                                      |
+| `model_log_interval`   | `Optional[int]`       | Steps to wait between logging model checkpoints to the ClearML dasboard (default: `None`). Will have no effect without also setting `log_best_dir` or `log_latest_dir`.                                                            |
+| `log_dataset_dir`      | `Optional[str]`       | Directory containing the dataset to be logged and versioned as a [ClearML Dataset](https://clear.ml/docs/latest/docs/clearml_data/clearml_data/) (default: `None`).                                                                |
+| `log_best_dir`         | `Optional[str]`       | Directory containing the best trained model as saved by spaCy (by default in `training/model-best`), to be logged and versioned as a ClearML artifact (default: `None`)                                                            |
+| `log_latest_dir`       | `Optional[str]`       | Directory containing the latest trained model as saved by spaCy (by default in `training/model-last`), to be logged and versioned as a ClearML artifact (default: `None`)                                                          |
+| `log_custom_stats`     | `Optional[List[str]]` | A list of regular expressions that will be applied to the info dictionary passed to the logger (default: `None`). Statistics and metrics that match these regexps will be automatically logged. Added in `spacy.ClearMLLogger.v2`. |
 
 ## PyTorchLogger
 
@@ -261,7 +261,8 @@ The following PyTorch statistics are currently supported:
 [training.logger]
 @loggers = "spacy.ChainLogger.v1"
 logger1 = {"@loggers": "spacy.PyTorchLogger.v1", "prefix": "pytorch", "device": "0", "cuda_mem_metric": "current"}
-logger2 = {"@loggers": "spacy.LookupLogger.v1", "substring": "pytorch"}
+# Alternatively, you can use any other logger that provides the `log_custom_stats` parameter.
+logger2 = {"@loggers": "spacy.LookupLogger.v1", "patterns": ["pytorch"]}
 ```
 
 | Name              | Type  | Description                                                                                                                                                     |
@@ -270,6 +271,41 @@ logger2 = {"@loggers": "spacy.LookupLogger.v1", "substring": "pytorch"}
 | `device`          | `int` | The identifier of the CUDA device (default: `0`).                                                                                                               |
 | `cuda_mem_pool`   | `str` | One of the memory pool values specified in the PyTorch docs: `all`, `large_pool`, `small_pool` (default: `all`).                                                |
 | `cuda_mem_metric` | `str` | One of the memory metric values specified in the PyTorch docs: `current`, `peak`, `allocated`, `freed`. To log all metrics, use `all` instead (default: `all`). |
+
+## CupyLogger
+
+### Installation
+
+This logger requires `cupy` to be installed:
+
+```bash
+pip install cupy
+```
+
+### Usage
+
+Similar to `PyTorchLogger`, `spacy.CupyLogger.v1` does not act as a bridge between spaCy and an external framework
+but rather is used with the [ChainLogger](#chainlogger) to facilitate the flow of metrics to other loggers.
+The `CupyLogger` queries statistics from the CuPy backend and stores them in the info dictionary passed to it. Downstream
+loggers can thereafter lookup the statistics and log them to their preferred framework.
+
+The following CuPy statistics are currently supported:
+
+- [CUDA memory pool statistics](https://docs.cupy.dev/en/stable/user_guide/memory.html)
+
+### Example config
+
+```ini
+[training.logger]
+@loggers = "spacy.ChainLogger.v1"
+logger1 = {"@loggers": "spacy.CupyLogger.v1", "prefix": "cupy"}
+# Alternatively, you can use any other logger that provides the `log_custom_stats` parameter.
+logger2 = {"@loggers": "spacy.LookupLogger.v1", "patterns": ["cupy"]}
+```
+
+| Name     | Type  | Description                                                                                                      |
+| -------- | ----- | ---------------------------------------------------------------------------------------------------------------- |
+| `prefix` | `str` | All metric names are prefixed with this string using dot notation, e.g: `<prefix>.<metric>` (default: `"cupy"`). |
 
 # Utility Loggers
 

@@ -14,6 +14,7 @@ FUNCTIONS = [
     ("loggers", "spacy.ChainLogger.v1"),
     ("loggers", "spacy.PyTorchLogger.v1"),
     ("loggers", "spacy.LookupLogger.v1"),
+    ("loggers", "spacy.CupyLogger.v1"),
 ]
 
 
