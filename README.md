@@ -284,8 +284,9 @@ pip install cupy
 
 ### Usage
 
-Similar to `PyTorchLogger`, `spacy.CupyLogger.v1` is intended to be used with [ChainLogger](#chainlogger).
-It queries statistics from the CuPy backend and stores them in the info dictionary passed to it. Downstream
+Similar to `PyTorchLogger`, `spacy.CupyLogger.v1` does not act as a bridge between spaCy and an external framework 
+but rather is used with the [ChainLogger](#chainlogger) to facilitate the flow of metrics to other loggers. 
+The `CupyLogger` queries statistics from the CuPy backend and stores them in the info dictionary passed to it. Downstream
 loggers can thereafter lookup the statistics and log them to their preferred framework.
 
 The following CuPy statistics are currently supported:
