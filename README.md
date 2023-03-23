@@ -359,3 +359,9 @@ logger2 = {"@loggers": "spacy.LookupLogger.v1", "patterns": ["^[pP]ytorch"]}
 | Name       | Type        | Description                                                                                          |
 | ---------- | ----------- | ---------------------------------------------------------------------------------------------------- |
 | `patterns` | `List[str]` | A list of regular expressions. If a statistic's name matches one of these, it's printed to `stdout`. |
+
+## Bug reports and other issues
+
+Please use [spaCy's issue tracker](https://github.com/explosion/spaCy/issues) to report a bug, or open a new thread on the
+[discussion board](https://github.com/explosion/spaCy/discussions)
+for any other issue.
